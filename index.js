@@ -9,12 +9,13 @@ app.use(express.json());
 const PORT = process.env.PORT;
 const MONGO_URL = process.env.MONGO_URL;
 export async function createConnection() {
-  const client = new MongoClient(MONGO_URL)
+  const client = new MongoClient(MONGO_URL);
   await client.connect();
   return client;
 }
-app.get("/", (request, response) => {
-  response.send("This is home page, append appropriate end points");
+app.get("/", async(request, response) => {
+  const client = await createConnection();
+  response.send(client)
 })
 app.get("/users", async (request, response) => {
   const client = await createConnection();
